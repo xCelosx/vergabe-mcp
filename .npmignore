@@ -1,0 +1,43 @@
+# Source — only ship the compiled output in dist/
+src/
+tsconfig.json
+*.tsbuildinfo
+
+# Dev environments
+node_modules/
+.env
+.env.*
+.cache/
+coverage/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.log
+
+# Git / CI
+.git/
+.gitignore
+.github/
+
+# Tests
+test/
+tests/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Docs / repo-internal
+CONTRIBUTING.md
+CHANGELOG.md
+HANDOVER*.md
+plan-*.md
+notes/
+docs/
+
+# Build tooling configs
+.eslintrc*
+.prettierrc*
+prettier.config.*
+eslint.config.*

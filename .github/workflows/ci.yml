@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["20", "22"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check + build
+        run: npm run build
+
+      - name: Smoke-test stdio boot
+        run: |
+          set -e
+          # Boot the server, send nothing, expect the ready line on stderr,
+          # then exit cleanly via timeout (server runs forever on stdio).
+          timeout 5s node dist/index.js < /dev/null > /tmp/stdout.log 2> /tmp/stderr.log || true
+          grep -q "ready on stdio" /tmp/stderr.log
+          # Stdout must stay empty — it's the MCP wire protocol.
+          test ! -s /tmp/stdout.log
