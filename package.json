@@ -1,6 +1,6 @@
 {
   "name": "vergabe-mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "MCP server for German and EU public-procurement data (BKMS / oeffentlichevergabe.de + TED Europa). Four tools: unified notice search, full notice detail with PDF text extraction, buyer history, and document download (v2.0).",
   "type": "module",
   "main": "./dist/index.js",

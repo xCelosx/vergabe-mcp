@@ -56,6 +56,32 @@ function dedupNotices(notices: Notice[]): { notices: Notice[]; collapsed: number
   return { notices: [...map.values()], collapsed };
 }
 
+/**
+ * Round-robin merge of per-source notice lists so that capping by max_results
+ * does not silently starve one source. Without this, whichever Promise.all
+ * task pushes first dominates the array, and slice(0, max) drops the slower
+ * source — that's how a 14-day BKMS query (slow, many ZIPs) ended up with 1
+ * result vs 99 TED at max_results=100.
+ */
+function interleaveBySource(
+  bySource: Map<string, Notice[]>
+): Notice[] {
+  const out: Notice[] = [];
+  const iters = [...bySource.values()].map((arr) => ({ arr, i: 0 }));
+  let added = true;
+  while (added) {
+    added = false;
+    for (const it of iters) {
+      if (it.i < it.arr.length) {
+        const item = it.arr[it.i++];
+        if (item) out.push(item);
+        added = true;
+      }
+    }
+  }
+  return out;
+}
+
 export async function runSearchNotices(
   rawInput: unknown
 ): Promise<SearchNoticesOutput> {
@@ -66,7 +92,12 @@ export async function runSearchNotices(
 
   const warnings: string[] = [];
   const sourcesUsed: string[] = [];
-  const all: Notice[] = [];
+  const bySource = new Map<string, Notice[]>();
+
+  // When merging both sources, ask each for the full max so that round-robin
+  // interleave has enough headroom. Asking each for only `maxResults / 2` would
+  // be cheaper but causes the same starvation problem when one source is sparse.
+  const perSourceCap = maxResults;
 
   const ovParams: OvSearchParams = {
     country,
@@ -74,7 +105,7 @@ export async function runSearchNotices(
     publication_date_to: input.publication_date_to,
     cpv_prefix: input.cpv_prefix,
     nuts: input.nuts,
-    max_results: maxResults,
+    max_results: perSourceCap,
   };
 
   const tedParams: TedSearchParams = {
@@ -83,7 +114,7 @@ export async function runSearchNotices(
     publication_date_to: input.publication_date_to,
     cpv_prefix: input.cpv_prefix,
     nuts: input.nuts,
-    max_results: maxResults,
+    max_results: perSourceCap,
   };
 
   // Fetch sources in parallel when "both".
@@ -95,7 +126,7 @@ export async function runSearchNotices(
       (async () => {
         try {
           const { notices, warnings: w } = await searchOeffentlicheVergabe(ovParams);
-          all.push(...notices);
+          bySource.set("oeffentlichevergabe", notices);
           warnings.push(...w);
         } catch (err) {
           warnings.push(
@@ -112,7 +143,7 @@ export async function runSearchNotices(
       (async () => {
         try {
           const { notices, warnings: w } = await searchTed(tedParams);
-          all.push(...notices);
+          bySource.set("ted", notices);
           warnings.push(...w);
         } catch (err) {
           warnings.push(`TED source failed: ${(err as Error).message}`);
@@ -123,7 +154,11 @@ export async function runSearchNotices(
 
   await Promise.all(tasks);
 
-  const { notices: deduped, collapsed } = dedupNotices(all);
+  // Round-robin so the slow source (BKMS = 14 ZIPs) isn't starved by the
+  // fast source (TED = single API call) when slicing at max_results.
+  const interleaved = interleaveBySource(bySource);
+
+  const { notices: deduped, collapsed } = dedupNotices(interleaved);
   if (collapsed > 0) {
     warnings.push(`De-duplicated ${collapsed} notices appearing in both sources.`);
   }

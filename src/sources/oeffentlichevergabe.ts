@@ -28,7 +28,7 @@ import type {
 
 const BASE = "https://oeffentlichevergabe.de";
 const EXPORT_URL = `${BASE}/api/notice-exports`;
-const USER_AGENT = "vergabe-mcp/1.1.0 (+https://github.com/xCelosx/vergabe-mcp)";
+const USER_AGENT = "vergabe-mcp/1.1.1 (+https://github.com/xCelosx/vergabe-mcp)";
 
 // Limit to contract notices (offers companies can bid on). Excludes
 // award notices, modifications, voluntary ex-ante, etc.
