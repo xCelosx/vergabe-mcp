@@ -22,10 +22,25 @@ Both data sources are public and require **no API key**.
 
 ---
 
-## Install
+## Install (Recommended: Desktop Extension)
+
+Since Claude Desktop now supports Anthropic [Desktop Extensions](https://www.anthropic.com/engineering/desktop-extensions), the easiest install path is the bundled `.mcpb` file:
+
+1. Download the latest `vergabe-mcp.mcpb` from the [Releases page](https://github.com/xCelosx/vergabe-mcp/releases/latest).
+2. In Claude Desktop: open **Settings → Extensions → Advanced settings → Install Extension…**
+3. Select the downloaded `.mcpb` file and click **Install**.
+4. Verify: in any chat ask *"Welche vergabe-Tools hast du?"* — Claude should list four tools (`vergabe_search_notices`, `vergabe_get_notice_detail`, `vergabe_list_buyer_history`, `vergabe_download_documents`).
+
+No `npm install`, no `claude_desktop_config.json` editing, no restart loop.
+
+---
+
+## Install (Manual / Developer)
+
+For development against the source or if you prefer the traditional MCP install:
 
 ```bash
-# Global (recommended — MCP clients launch the binary by name)
+# Global (MCP clients launch the binary by name)
 npm install -g vergabe-mcp
 
 # Or local in a project
@@ -34,9 +49,7 @@ npm install vergabe-mcp
 
 Requires Node.js **20 or later**.
 
----
-
-## Configure in Claude Desktop
+### Configure in Claude Desktop
 
 Edit your `claude_desktop_config.json` (location: `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
 
@@ -50,7 +63,7 @@ Edit your `claude_desktop_config.json` (location: `~/Library/Application Support
 }
 ```
 
-Restart Claude Desktop. The three tools appear under the MCP icon.
+Restart Claude Desktop. The four tools appear under the MCP icon.
 
 ### Claude Code
 

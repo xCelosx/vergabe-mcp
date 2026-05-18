@@ -4,6 +4,16 @@ All notable changes to `vergabe-mcp` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-05-18
+
+### Added
+- Anthropic Desktop Extension (`.mcpb`) build for one-click install in Claude Desktop. Download from GitHub Releases, double-click, Install — no terminal, no JSON edit, no restart.
+- `manifest.json` describing the extension to Claude Desktop.
+- `npm run build:mcpb` script to package the production server + node_modules into `vergabe-mcp.mcpb`.
+
+### Changed
+- Recommended install path in README is now the Desktop Extension. Manual `npm install -g` route remains documented for developers.
+
 ## [1.1.0] - 2026-05-18
 
 Data-source adapters rewritten against the real live APIs after v1.0.0 smoke
