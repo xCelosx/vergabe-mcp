@@ -1,0 +1,53 @@
+{
+  "manifest_version": "0.2",
+  "name": "vergabe-mcp",
+  "display_name": "Vergabe-MCP",
+  "version": "1.1.2",
+  "description": "MCP-Server fuer deutsche und EU-Vergabedaten (BKMS / oeffentlichevergabe.de + TED Europa). Vier Tools: Suche, Detail, Buyer-Historie, Dokumenten-Download.",
+  "long_description": "Vergabe-MCP gibt Claude Desktop direkten Zugriff auf deutsche und europaeische oeffentliche Ausschreibungen. BKMS (oeffentlichevergabe.de) und TED Europa werden anonym ueber ihre Open-Data-APIs angefragt — kein API-Key, keine Registrierung. Vier Tools: vergabe_search_notices (unified Search mit CPV/NUTS/Datums-Filtern und Cross-Source-Dedup), vergabe_get_notice_detail (Full Notice mit PDF-Text-Extract, 30-Tage-Disk-Cache), vergabe_list_buyer_history (Historie pro Vergabestelle), vergabe_download_documents (Stub in v1.x, voll in v2.0). Gebaut fuer den Vergabe-AI Vault: https://florentinbernhardt.de/vault.",
+  "author": {
+    "name": "Florentin Bernhardt",
+    "url": "https://florentinbernhardt.de"
+  },
+  "homepage": "https://florentinbernhardt.de/vault/finde-vergaben",
+  "documentation": "https://github.com/xCelosx/vergabe-mcp#readme",
+  "support": "https://github.com/xCelosx/vergabe-mcp/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xCelosx/vergabe-mcp"
+  },
+  "license": "MIT",
+  "keywords": ["vergabe", "bkms", "ted", "procurement", "germany", "ausschreibung", "tender"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"]
+    }
+  },
+  "tools": [
+    {
+      "name": "vergabe_search_notices",
+      "description": "Unified search across BKMS + TED with date / CPV / NUTS / country filters and automatic cross-source de-duplication."
+    },
+    {
+      "name": "vergabe_get_notice_detail",
+      "description": "Full notice payload including lots, attachments and on-the-fly PDF text extraction. Disk-cached for 30 days."
+    },
+    {
+      "name": "vergabe_list_buyer_history",
+      "description": "Historical notices from a specific buyer (Vergabestelle) over the last N years."
+    },
+    {
+      "name": "vergabe_download_documents",
+      "description": "(v1.x stub) Downloads all Vergabeunterlagen of a notice into a target directory. Full implementation in v2.0."
+    }
+  ],
+  "compatibility": {
+    "runtimes": {
+      "node": ">=20.0.0"
+    },
+    "platforms": ["darwin", "linux", "win32"]
+  }
+}

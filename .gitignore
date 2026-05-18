@@ -9,3 +9,7 @@ coverage/
 .vscode/
 .idea/
 *.tsbuildinfo
+
+# Desktop Extension bundle (built locally, shipped via GitHub Release asset)
+*.mcpb
+.mcpb-staging/

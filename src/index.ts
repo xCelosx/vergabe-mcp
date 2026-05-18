@@ -35,7 +35,7 @@ import {
 } from "./tools/download_documents.js";
 
 const SERVER_NAME = "vergabe-mcp";
-const SERVER_VERSION = "1.1.0";
+const SERVER_VERSION = "1.1.2";
 
 const server = new Server(
   {

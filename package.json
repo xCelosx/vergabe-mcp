@@ -1,6 +1,6 @@
 {
   "name": "vergabe-mcp",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "MCP server for German and EU public-procurement data (BKMS / oeffentlichevergabe.de + TED Europa). Four tools: unified notice search, full notice detail with PDF text extraction, buyer history, and document download (v2.0).",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,7 +17,8 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "prepublishOnly": "npm run build",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "build:mcpb": "npm run build && node scripts/pack-mcpb.mjs"
   },
   "keywords": [
     "mcp",
