@@ -59,7 +59,7 @@ function sleep(ms: number): Promise<void> {
 const axiosInstance: AxiosInstance = axios.create({
   timeout: 30_000,
   headers: {
-    "User-Agent": "vergabe-mcp/1.0.0 (+https://github.com/xCelosx/vergabe-mcp)",
+    "User-Agent": "vergabe-mcp/1.1.0 (+https://github.com/xCelosx/vergabe-mcp)",
     Accept: "application/json",
   },
   // Allow non-2xx so we can decide on retry per status.

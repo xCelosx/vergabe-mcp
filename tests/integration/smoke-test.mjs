@@ -485,7 +485,7 @@ async function layerA() {
     const out = await downloadMod.runDownloadDocuments({
       notice_id: "any-id-here",
       target_dir: "./tmp-test",
-      source: "BKMS",
+      source: "oeffentlichevergabe",
     });
     if (out.status === "not_yet_implemented" && typeof out.message === "string") {
       record(
@@ -635,7 +635,7 @@ async function layerB() {
         arguments: {
           notice_id: "test-id",
           target_dir: "./tmp",
-          source: "BKMS",
+          source: "oeffentlichevergabe",
         },
       },
       15_000

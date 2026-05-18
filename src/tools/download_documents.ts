@@ -15,7 +15,7 @@ import { z } from "zod";
 export const DownloadDocumentsInputSchema = z.object({
   notice_id: z.string().min(1),
   target_dir: z.string().min(1),
-  source: z.enum(["BKMS", "TED"]).default("BKMS").optional(),
+  source: z.enum(["oeffentlichevergabe", "ted"]).default("oeffentlichevergabe").optional(),
 });
 
 export type DownloadDocumentsInput = z.infer<
@@ -59,8 +59,8 @@ export const downloadDocumentsToolDefinition = {
       },
       source: {
         type: "string",
-        enum: ["BKMS", "TED"],
-        description: "default: BKMS",
+        enum: ["oeffentlichevergabe", "ted"],
+        description: "default: oeffentlichevergabe",
       },
     },
     required: ["notice_id", "target_dir"],
